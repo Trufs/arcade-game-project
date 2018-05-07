@@ -44,10 +44,17 @@ class Enemy {
 		this.render();
 	}
 
+	increaseSpeed(){
+		allEnemies.forEach(function(enemy) {
+			enemy.speed += 10;
+		});
+	}
+
 	checkCollisions(){
 		if (this.location.x <= (player.x + 40) && this.location.x >= (player.x - 40) &&
 			this.location.y <= (player.y + 40) && this.location.y >= (player.y - 40)){
 			console.log('collision');
+			player.resetPlayer();
 		}
 	}
 }
@@ -67,7 +74,9 @@ class Player {
 	update(){
 		// Update the player's position
 		if (this.y <0){
+			console.log('win');
 			this.resetPlayer();
+			enemy.increaseSpeed();
 		}
 
 		if (this.x > 400){
@@ -105,12 +114,9 @@ class Player {
 	}
 
 	resetPlayer(){
-		console.log('win');
 		this.x = 300;
 		this.y = 300;
-		allEnemies.forEach(function(enemy) {
-			enemy.speed += 10;
-		});
+
 	}
 }
 

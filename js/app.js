@@ -44,10 +44,11 @@ class Enemy {
 		this.render();
 	}
 
-	// checkCollisions(){
-	// 	if (enemy.x === player.x && enemy.y === player.y){
-	// 		console.log('collision');
-	// 	}
+	checkCollisions(){
+		if (this.location.x <= (player.x + 40) && this.location.x >= (player.x - 40) &&
+			this.location.y <= (player.y + 40) && this.location.y >= (player.y - 40)){
+			console.log('collision');
+		}
 	}
 }
 
@@ -65,6 +66,7 @@ class Player {
 
 	update(){
 		// Update the player's position
+
 		if (this.x > 400){
 			this.x -= 100;
 		}
@@ -118,15 +120,6 @@ var player = new Player();
 player.render();
 
 
-//^^^INITIALIZE  //initializing can probably be done with IIFEs?
-// Once you have completed implementing the Player and Enemy, you should instantiate them by:
-	// Creating a new Player object
-	// Creating several new Enemies objects and placing them in an array called allEnemies
-// Place all enemy objects in an array called allEnemies
-// Place the player object in a variable called player
-
-
-
     // ^^^ You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
@@ -136,7 +129,7 @@ player.render();
 // This class requires an update(), render() and
 // a handleInput() method.
 
-// You will need to implement the Player class, and you can use the Enemy class as an example on how to get started. At minimum you should implement the following:
+//  At minimum you should implement the following:
 	// The Player function, which initiates the Player by:
 		// Loading the image by setting this.sprite to the appropriate image in the image folder (use the code from the Enemy function as an example on how to do that) *
 		// Setting the Player initial location *

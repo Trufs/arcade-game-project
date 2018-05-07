@@ -1,13 +1,11 @@
 // The Enemy function, which initiates the Enemy by:
 	// Setting the Enemy initial location (you need to implement) *
-	// Setting the Enemy speed (you need to implement)
+	// Setting the Enemy speed (you need to implement) *
 	// The update method for the Enemy Updates the Enemy location (you need to implement) *
 	// Handles collision with the Player (you need to implement)
 	// You can add your own Enemy methods as needed
 
-//HANDLE KEY PRESSES
-// This listens for key presses and sends the keys to your
-// Player.handleInput() method. You don't need to modify this.
+//Handle Key Presses
 document.addEventListener('keyup', function(e) {
     var allowedKeys = {
         37: 'left',
@@ -18,75 +16,77 @@ document.addEventListener('keyup', function(e) {
     player.handleInput(allowedKeys[e.keyCode]);
 });
 
+//Enemy class
 class Enemy {
 	constructor(x,y){
-		this.sprite = 'images/enemy-bug.png';     // The image/sprite for our enemies, this uses a helper we've provided to easily load images
+		this.sprite = 'images/enemy-bug.png';     // The image/sprite for enemies
 
-    	this.location = {
+    	this.location = {  //initial location
     		x: x,
     		y: y
     	}
 
-    	this.speed = 100; // how many pixels the enemy will move between the frames
+    	this.speed = 50; // initial speed
 	}
 
-	render(){
+	render(){  // draw enemy on screen
 		ctx.drawImage(Resources.get(this.sprite), this.location.x, this.location.y);
 	}
 
-	update(dt){
-		// Update the enemy's position  Parameter: dt, a time delta between ticks
-		if (this.location.x > 505){
-			this.location.x = 0;
+	update(dt){ // Update the enemy's position
+
+		if (this.location.x > 505){  // enemies come back after crossing the screen
+			this.location.x = (Math.random() * 300) * -1;
+			this.location.y = Math.random() * 250;
 		}
 
-		this.location.x += this.speed*dt;
-		this.render();
+		this.location.x += this.speed*dt;  // this part makes enemies move
 	}
 
-	increaseSpeed(){
+	increaseSpeed(){  //increase speed after a level is won
 		allEnemies.forEach(function(enemy) {
 			enemy.speed += 10;
 		});
 	}
 
-	checkCollisions(){
+	checkCollisions(){  //handle collisions with the player
 		if (this.location.x <= (player.x + 40) && this.location.x >= (player.x - 40) &&
 			this.location.y <= (player.y + 40) && this.location.y >= (player.y - 40)){
 			console.log('collision');
-			player.resetPlayer();
+			player.resetPlayer(); //reset player position
 		}
 	}
 }
 
 
+//Player class
 class Player {
 	constructor(){
-		this.sprite = 'images/char-pink-girl.png';
-		this.x = 300;
+		this.sprite = 'images/char-pink-girl.png';  //player image
+		this.x = 300;  //initial location
 		this.y = 300;
 	}
 
-	render(){
+	render(){  //draws the player on canvas
 		ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 	}
 
-	update(){
-		// Update the player's position
-		if (this.y <0){
+	update(){ // Update the player's position
+
+		if (this.y <0){ // check if the player won
 			console.log('win');
-			this.resetPlayer();
+    		this.resetPlayer();
 			enemy.increaseSpeed();
 		}
 
-		if (this.x > 400){
+		if (this.x > 400){ //prevent going offscreen
 			this.x -= 100;
 		}
 		else if (this.x < 0){
 			this.x += 100;
 
 		}
-		if (this.y > 400){
+		if (this.y > 400){ //prevent going offscreen
 			this.y -= 83;
 		}
 		else if (this.y < -100){
@@ -94,7 +94,7 @@ class Player {
 		}
 	}
 
-	handleInput(direction){
+	handleInput(direction){ //allows user to control the hero
 		console.log(direction);
 		switch (direction){
 			case 'left':
@@ -113,28 +113,26 @@ class Player {
 
 	}
 
-	resetPlayer(){
+	resetPlayer(){  //reset to initial position
 		this.x = 300;
 		this.y = 300;
-
 	}
 }
 
 
 
 const allEnemies = [];
-let x = 30;
-let y = 50;
-for (let i=0; i<2; i++){
+let x = (Math.random() * 500) * -1;
+let y = Math.random() * 250;
+for (let i=0; i<3; i++){
 	var enemy = new Enemy(x,y);
 	allEnemies.push(enemy);
-	x += 50;
-	y += 80;
-
+		x = (Math.random() * 300) * -1;
+		y = Math.random() * 250;
 }
 
-var player = new Player();
-player.render();
+var player = new Player(); //initiate player
+player.render();  //render player
 
 
     // ^^^ You should multiply any movement by the dt parameter
@@ -153,7 +151,7 @@ player.render();
 	// The update method for the Player (can be similar to the one for the Enemy) *
 	// The render method for the Player (use the code from the render method for the Enemy) *
 	// The handleInput method, which should receive user input, allowedKeys (the key which was pressed) and move the player according to that input. In particular: *
-	// Left key should move the player to the left, right key to the right, up should move the player up and down should move the player down.
+	// Left key should move the player to the left, right key to the right, up should move the player up and down should move the player down. *
 	// Recall that the player cannot move off screen (so you will need to check for that and handle appropriately). *
 	// If the player reaches the water the game should be reset by moving the player back to the initial location (you can write a separate reset Player method to handle that).*
 	// You can add your own Player methods as needed.

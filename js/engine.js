@@ -80,7 +80,7 @@ var Engine = (function(global) {  //this function is an iffy  //why do we pass g
             enemy.update(dt);
         });
 
-        player.update();   //tu chyba też dt?
+        player.update();
                             //It will then call the update function for your player object.
     }
     /*  These update methods  ^^^  should focus purely on updating
@@ -88,8 +88,7 @@ var Engine = (function(global) {  //this function is an iffy  //why do we pass g
      * render methods.
      */
 
-
-
+7
     //--------------//
 
     function render() {   //This function initially draws the "game level", it will then call

@@ -57,7 +57,8 @@ var Engine = (function(global) {  //this function is an iffy  //why do we pass g
     function update(dt) {   //------This function is called by main (our game loop) and itself calls all
                                     //of the functions which may need to update entity's data.
         updateEntities(dt);
-            allEnemies.forEach(function(enemy) {
+
+        allEnemies.forEach(function(enemy) {
             enemy.checkCollisions();
         });
             /*  Based on how
@@ -88,7 +89,7 @@ var Engine = (function(global) {  //this function is an iffy  //why do we pass g
      * render methods.
      */
 
-7
+
     //--------------//
 
     function render() {   //This function initially draws the "game level", it will then call
@@ -155,6 +156,16 @@ var Engine = (function(global) {  //this function is an iffy  //why do we pass g
         player.render();
     }
 
+    //--------------//
+
+    /* This function does nothing but it could have been a good place to
+     * handle game reset states - maybe a new game menu or a game over screen
+     * those sorts of things. It's only called once by the init() method.
+     */
+
+    // function reset() {
+    //     // noop
+    // }
 
     //--------------//
 
@@ -180,12 +191,3 @@ var Engine = (function(global) {  //this function is an iffy  //why do we pass g
 
 
 
-    //--------------//
-
-    /* This function does nothing but it could have been a good place to
-     * handle game reset states - maybe a new game menu or a game over screen
-     * those sorts of things. It's only called once by the init() method.
-     */
-    // function reset() {
-    //     // noop
-    // }

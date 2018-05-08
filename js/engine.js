@@ -61,12 +61,6 @@ var Engine = (function(global) {  //this function is an iffy  //why do we pass g
         allEnemies.forEach(function(enemy) {
             enemy.checkCollisions();
         });
-            /*  Based on how
-             * you implement your collision detection you may find a need to use the
-             * commented function call. You may or may not want to implement this
-             * functionality this way (you could just implement collision detection
-             * on the entities themselves within your app.js file).
-             */
     }
 
 
@@ -117,11 +111,13 @@ var Engine = (function(global) {  //this function is an iffy  //why do we pass g
 
             for (col = 0; col < numCols; col++) {
 
-                ctx.drawImage(Resources.get(rowImages[row]), col * 101, row * 83);  //??
+                ctx.drawImage(Resources.get(rowImages[row]), col * 101, row * 83);
             }
         }
-
+        // ctx.font = '24px serif';
+        // ctx.fillText('Level 1', 10, 40);
         renderEntities();
+        renderScoreboard();
     }
 
         /* The drawImage function of the canvas' context element
@@ -148,12 +144,15 @@ var Engine = (function(global) {  //this function is an iffy  //why do we pass g
 
     function renderEntities() {     /* This function is called by the render function and is called on each game
                                     * tick. */
-
         allEnemies.forEach(function(enemy) {
             enemy.render();
         });
 
         player.render();
+    }
+
+    function renderScoreboard(){
+        scoreboard.render();
     }
 
     //--------------//

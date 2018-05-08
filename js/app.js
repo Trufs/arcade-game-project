@@ -16,6 +16,8 @@ document.addEventListener('keyup', function(e) {
     player.handleInput(allowedKeys[e.keyCode]);
 });
 
+const finished = document.querySelector('.congrats');
+;
 //Enemy class
 class Enemy {
 	constructor(x,y){
@@ -31,12 +33,13 @@ class Enemy {
 
 	render(){  // draw enemy on screen
 		ctx.drawImage(Resources.get(this.sprite), this.location.x, this.location.y);
+
 	}
 
 	update(dt){ // Update the enemy's position
 
 		if (this.location.x > 505){  // enemies come back after crossing the screen
-			this.location.x = (Math.random() * 300) * -1;
+			this.location.x = Math.random() * -300;
 			this.location.y = Math.random() * 250;
 		}
 
@@ -69,23 +72,21 @@ class Player {
 
 	render(){  //draws the player on canvas
 		ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+
 	}
 
 	update(){ // Update the player's position
 
 		if (this.y <0){ // check if the player won
-			console.log('win');
-    		this.resetPlayer();
-			enemy.increaseSpeed();
+			this.winning();
 		}
-
-		if (this.x > 400){ //prevent going offscreen
+		else if (this.x > 400){ //prevent going offscreen
 			this.x -= 100;
 		}
 		else if (this.x < 0){
 			this.x += 100;
-
 		}
+
 		if (this.y > 400){ //prevent going offscreen
 			this.y -= 83;
 		}
@@ -117,22 +118,50 @@ class Player {
 		this.x = 300;
 		this.y = 300;
 	}
+
+	winning(){
+		console.log('win');
+		scoreboard.updateLevels();
+		this.resetPlayer();
+		enemy.increaseSpeed();
+	}
 }
 
+class Scoreboard{
+	constructor(){
+		this.x = 10;
+		this.y = 40;
+		this.lvl = 1;
+	}
 
+	render(){
+		ctx.font = '24px serif';
+	    ctx.fillText(`Speed: ${this.lvl}`, this.x, this.y);
+	}
 
+	updateLevels(){
+	    this.lvl++;
+	}
+}
+
+var scoreboard = new Scoreboard();
 const allEnemies = [];
-let x = (Math.random() * 500) * -1;
-let y = Math.random() * 250;
-for (let i=0; i<3; i++){
-	var enemy = new Enemy(x,y);
-	allEnemies.push(enemy);
-		x = (Math.random() * 300) * -1;
-		y = Math.random() * 250;
-}
+	let x = Math.random() * -500;
+	let y = Math.random() * 250;
 
-var player = new Player(); //initiate player
-player.render();  //render player
+	for (let i=0; i<3; i++){
+		x = Math.random() * -300;
+		y = Math.random() * 250;
+		var enemy = new Enemy(x,y);
+		allEnemies.push(enemy);
+
+	}
+
+	var player = new Player(); //initiate player
+	player.render();  //render player
+
+
+
 
 
     // ^^^ You should multiply any movement by the dt parameter

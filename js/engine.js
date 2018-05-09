@@ -9,7 +9,7 @@ var Engine = (function(global) {  //this function is an iffy  //why do we pass g
     var doc = global.document,  // Predefine the variables we'll be using within this scope
         win = global.window,
         canvas = doc.createElement('canvas'), //create the canvas element
-        ctx = canvas.getContext('2d'),  //grab the 2D context for that canvas ???????????????????
+        ctx = canvas.getContext('2d'),  //grab the 2D context for that canvas
         lastTime;                       //used to determine the time delta for the next time this function is called.
 
     canvas.width = 505;
@@ -127,7 +127,6 @@ var Engine = (function(global) {  //this function is an iffy  //why do we pass g
         // ctx.font = '24px serif';
         // ctx.fillText('Level 1', 10, 40);
         renderEntities();
-        renderScoreboard();
     }
 
         /* The drawImage function of the canvas' context element
@@ -161,15 +160,10 @@ var Engine = (function(global) {  //this function is an iffy  //why do we pass g
         allGems.forEach(function(gem){
             gem.render();
         });
-
-        player.render();
-
-
-    }
-
-    function renderScoreboard(){
         scoreboard.render();
+        player.render();
     }
+
 
     //--------------//
 

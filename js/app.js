@@ -35,17 +35,13 @@ class Enemy {
 	}
 
 	increaseSpeed(){  //increase speed after a level is won
-		allEnemies.forEach(function(enemy) {
-			enemy.speed += 10;
-		});
+			this.speed += 10;
 	}
 
 	resetEnemy(){  //resets enemies after a level is won
-		allEnemies.forEach(function(enemy) {
 			randomize(xValues);
-			enemy.x = x;
-			enemy.y = y;
-		});
+			this.x = x;
+			this.y = y;
 	}
 
 	checkCollisions(){  //handle collisions with the player
@@ -116,9 +112,15 @@ class Player {
 	winning(){ //
 		scoreboard.updateLevels();
 		this.resetPlayer();
-		enemy.increaseSpeed();
-		enemy.resetEnemy();
-		gem.resetGems();
+		allEnemies.forEach(function(enemy) {
+			enemy.increaseSpeed();
+		});
+		allEnemies.forEach(function(enemy) {
+			enemy.resetEnemy();
+		});
+		allGems.forEach(function(gem) {
+			gem.resetGems();
+		});
 	}
 }
 
@@ -176,12 +178,10 @@ class Gem{
 	}
 
 	resetGems(){
-		allGems.forEach(function(gem) {
 			randomize(gemValues);
-			gem.x = x;
-			gem.y = y+80;
-			gem.found = false;
-		});
+			this.x = x;
+			this.y = y+80;
+			this.found = false;
 	}
 
 	checkCollisions(){  //handle collisions with the player
@@ -196,19 +196,14 @@ class Gem{
 	}
 }
 
-	var scoreboard = new Scoreboard();
-	const allEnemies = [];
-	let x, y, yChoser;
-	let xValues = [0, -80, -280, -380, -480, -580, -680, -780, -880];
-	let gemValues = [25, 125, 225, 325, 425];
+//variables needed for creating enemies and gems
+let x, y, yChoser;
+const allEnemies = [];
+const allGems = [];
+let xValues = [0, -80, -280, -380, -480, -580, -680, -780, -880];
+let gemValues = [25, 125, 225, 325, 425];
 
-
-	for (let i=0; i<6; i++){
-		randomize(xValues);
-		var enemy = new Enemy(x,y);
-		allEnemies.push(enemy);
-	}
-
+//randomize x and y values for enemies and gems
 function randomize(values){
 		x = values[Math.floor(Math.random() * values.length)];
 		yChoser = Math.random();
@@ -216,12 +211,24 @@ function randomize(values){
 		return x, y;
 }
 
-	const allGems = [];
-	for (let i=0; i<3; i++){
+//create enemies
+(function makeEnemies(){
+		for (let i=0; i<6; i++){
+		randomize(xValues);
+		var enemy = new Enemy(x,y);
+		allEnemies.push(enemy);
+	}
+})();
+
+//create gems
+(function makeGems(){
+		for (let i=0; i<3; i++){
 		randomize(gemValues);
 		var gem = new Gem(x,y+80);
 		allGems.push(gem);
 	}
+})();
+
 
 function checkGems(gemArray){
 	// for (let i=0; i<gemArray.length; i++){
@@ -229,4 +236,6 @@ function checkGems(gemArray){
 	// }
 }
 
-	var player = new Player(); //initiate player
+//create other entities
+var scoreboard = new Scoreboard(); //initiate scoreboard
+var player = new Player(); //initiate player

@@ -1,16 +1,13 @@
 # Arcade Game Project
 A version of the classic 'Frogger' game: player has to get across the street while avoiding the bugs. The game can be useful for training reaction speed.
 
-
 ### Prerequisites
 The game can be run in any browser which supports ES6 and HTML5 canvas.
-
 
 ### Installing
 No instalation is needed. All you need to do is open the index.html file in your browser.
 
-
-## Instructions
+### Instructions
 You can move the character by using arrows (left, right, up, down). At the beginning of the game, the character is placed on the bottom of the screen, on the grass panels. Your task is to get safely across the street (three rows of the rock panels above) and into water (the top row). Once you reach the water, new level is triggered and the character's position resets.
 
 Enemies
@@ -23,16 +20,13 @@ There will be some orange gems on the road. Try to collect them! Once you've fou
 Winning the game
 You win when you decide you have enough levels and gems to satisfy your needs. Congratulations!
 
-
-## Acknowledgments
+### Acknowledgments
 * The starter code for this game and the graphics were provided by Udacity.
 
-
-## Contributing
+### Contributing
 This is a project for Udacity course and it will likely not be developed further.
 
-
-## License
+### License
 This project is licensed under the MIT License - see the [LICENSE](https://github.com/Trufs/arcade-game-project/blob/master/LICENSE) file for details.
 
 

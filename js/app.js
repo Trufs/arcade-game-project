@@ -17,7 +17,7 @@ class Enemy {
 		this.sprite = 'images/enemy-bug.png'; // The image/sprite for enemies
 		this.x=x;							 //x,y - coordinates of the enemy on canvas
 		this.y=y;
-    	this.speed = Math.floor(Math.random() * 200 + 50); // initial speed
+    	this.speed = Math.floor(Math.random() * 100 + 50); // initial speed
 	}
 
 	render(){  // draw enemy on screen
@@ -203,6 +203,7 @@ const allGems = [];
 let xValues = [0, -80, -280, -380, -480, -580, -680, -780, -880];
 let gemValues = [25, 125, 225, 325, 425];
 
+
 //randomize x and y values for enemies and gems
 function randomize(values){
 		x = values[Math.floor(Math.random() * values.length)];
@@ -223,18 +224,32 @@ function randomize(values){
 //create gems
 (function makeGems(){
 		for (let i=0; i<3; i++){
-		randomize(gemValues);
-		var gem = new Gem(x,y+80);
-		allGems.push(gem);
-	}
+			randomize(gemValues);
+			var gem = new Gem(x,y+80);
+			allGems.push(gem);
+		}
+		checkGems(allGems);
 })();
 
-
+//check if gems don't double in the same position
 function checkGems(gemArray){
-	// for (let i=0; i<gemArray.length; i++){
-	// 	if (gemArray[i]===gemArray[i-1])
-	// }
-}
+	console.log(gemArray[0].x, gemArray[0].y);
+	console.log(gemArray[1].x, gemArray[1].y);
+	console.log(gemArray[2].x, gemArray[2].y);
+
+	for (let i=0; i<gemArray.length; i++){
+		for(let j=i+1; j<gemArray.length; j++){
+			if(gemArray[i].x === gemArray[j].x && gemArray[i].y === gemArray[j].y){
+					console.log('trouble');
+					randomize(gemValues);
+					gemArray[j].x = x;
+					gemArray[j].y = y;
+					checkGems(allGems);
+				}
+			}
+		}
+	}
+
 
 //create other entities
 var scoreboard = new Scoreboard(); //initiate scoreboard

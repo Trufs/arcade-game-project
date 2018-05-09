@@ -54,6 +54,7 @@ class Enemy {
 	}
 }
 
+
 //Player class
 class Player {
 	constructor(){
@@ -123,6 +124,7 @@ class Player {
 		});
 	}
 }
+
 
 //Scoreboard class
 class Scoreboard{
@@ -196,12 +198,13 @@ class Gem{
 	}
 }
 
+
 //variables needed for creating enemies and gems
 let x, y, yChoser;
 const allEnemies = [];
 const allGems = [];
-let xValues = [0, -80, -280, -380, -480, -580, -680, -780, -880];
-let gemValues = [25, 125, 225, 325, 425];
+const xValues = [0, -80, -280, -380, -480, -580, -680, -780, -880];
+const gemValues = [25, 125, 225, 325, 425];
 
 
 //randomize x and y values for enemies and gems
@@ -245,10 +248,10 @@ function checkGems(gemArray){
 					gemArray[j].x = x;
 					gemArray[j].y = y;
 					checkGems(allGems);
-				}
 			}
 		}
 	}
+}
 
 
 //create other entities

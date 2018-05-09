@@ -4,18 +4,17 @@
  * render methods on your player and enemy objects (defined in your app.js).
  */
 
-var Engine = (function(global) {  //this function is an iffy  //why do we pass global object here?
+var Engine = (function(global) {
 
     var doc = global.document,  // Predefine the variables we'll be using within this scope
         win = global.window,
         canvas = doc.createElement('canvas'), //create the canvas element
         ctx = canvas.getContext('2d'),  //grab the 2D context for that canvas
-        lastTime;                       //used to determine the time delta for the next time this function is called.
+        lastTime;                       //used to determine the time delta for the next time this function is called
 
     canvas.width = 505;
     canvas.height = 606;
     doc.body.appendChild(canvas);
-
 
 
     //--------------//
@@ -31,12 +30,12 @@ var Engine = (function(global) {  //this function is an iffy  //why do we pass g
     //--------------//
 
     function main() { //This function serves as the kickoff point for the game loop itself
-                      // and handles properly calling the update and render methods. //it's called in init
+                      // and handles properly calling the update and render methods.
 
         var now = Date.now(),
             dt = (now - lastTime) / 1000.0;
 
-        update(dt);  //call the update function with delta time
+        update(dt);
         render();
         lastTime = now;
 
@@ -53,8 +52,7 @@ var Engine = (function(global) {  //this function is an iffy  //why do we pass g
 
     //--------------//
 
-
-    function update(dt) {   //------This function is called by main (our game loop) and itself calls all
+    function update(dt) {           //This function is called by main (our game loop) and itself calls all
                                     //of the functions which may need to update entity's data.
         updateEntities(dt);
 
@@ -68,30 +66,24 @@ var Engine = (function(global) {  //this function is an iffy  //why do we pass g
     }
 
 
-
     //--------------//
 
+    function updateEntities(dt) {
 
-    function updateEntities(dt) {  //This is called by the update function and
-
-        allEnemies.forEach(function(enemy) {  //loops through all of the objects within your allEnemies array
+        allEnemies.forEach(function(enemy) {  //loops through all of the objects within allEnemies array
                                               // as defined in app.js and calls their update() methods.
             enemy.update(dt);
         });
 
-        allGems.forEach(function(gem) {  //loops through all of the objects within your allEnemies array
-                                              // as defined in app.js and calls their update() methods.
+        allGems.forEach(function(gem) {
+
             gem.update(dt);
         });
 
 
         player.update();
-                            //It will then call the update function for your player object.
+
     }
-    /*  These update methods  ^^^  should focus purely on updating
-     * the data/properties related to the object. Do your drawing in your
-     * render methods.
-     */
 
 
     //--------------//
@@ -113,7 +105,6 @@ var Engine = (function(global) {  //this function is an iffy  //why do we pass g
             numCols = 5,
             row, col;
 
-        //---------------
 
         ctx.clearRect(0,0,canvas.width,canvas.height)    //Before drawing, clear existing canvas
 
@@ -124,8 +115,7 @@ var Engine = (function(global) {  //this function is an iffy  //why do we pass g
                 ctx.drawImage(Resources.get(rowImages[row]), col * 101, row * 83);
             }
         }
-        // ctx.font = '24px serif';
-        // ctx.fillText('Level 1', 10, 40);
+
         renderEntities();
     }
 
@@ -137,21 +127,10 @@ var Engine = (function(global) {  //this function is an iffy  //why do we pass g
          * we're using them over and over.
          */
 
-        /* 'for' ^^^^ Loop through the number of rows and columns we've defined above
-         * and, using the rowImages array, draw the correct image for that
-         * portion of the "grid"
-         */
-
-    /* Remember, this ^^^ function is called every
-     * game tick (or loop of the game engine) because that's how games work -
-     * they are flipbooks creating the illusion of animation but in reality
-     * they are just drawing the entire screen over and over.
-     */
-
 
     //--------------//
 
-    function renderEntities() {     /* This function is called by the render function and is called on each game tick. */
+    function renderEntities() {     // This function is called by the render function and is called on each game tick.
 
         allEnemies.forEach(function(enemy) {
             enemy.render();
@@ -160,21 +139,11 @@ var Engine = (function(global) {  //this function is an iffy  //why do we pass g
         allGems.forEach(function(gem){
             gem.render();
         });
+
         scoreboard.render();
         player.render();
     }
 
-
-    //--------------//
-
-    /* This function does nothing but it could have been a good place to
-     * handle game reset states - maybe a new game menu or a game over screen
-     * those sorts of things. It's only called once by the init() method.
-     */
-
-    // function reset() {
-    //     // noop
-    // }
 
     //--------------//
 
@@ -192,7 +161,6 @@ var Engine = (function(global) {  //this function is an iffy  //why do we pass g
 
     global.ctx = ctx;     /* Assign the canvas' context object to the global variable so that developers can use it more easily
                             * from within their app.js files. */
-
 
 
 })(this);  //this is the end of 'Engine' function; it calls itself

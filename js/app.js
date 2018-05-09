@@ -16,34 +16,27 @@ document.addEventListener('keyup', function(e) {
     player.handleInput(allowedKeys[e.keyCode]);
 });
 
-const finished = document.querySelector('.congrats');
-;
+
 //Enemy class
 class Enemy {
 	constructor(x,y){
-		this.sprite = 'images/enemy-bug.png';     // The image/sprite for enemies
-
-    	this.location = {  //initial location
-    		x: x,
-    		y: y
-    	}
-
+		this.sprite = 'images/enemy-bug.png'; // The image/sprite for enemies
+		this.x=x;
+		this.y=y;
     	this.speed = 50; // initial speed
 	}
 
 	render(){  // draw enemy on screen
-		ctx.drawImage(Resources.get(this.sprite), this.location.x, this.location.y);
-
+		ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 	}
 
 	update(dt){ // Update the enemy's position
-
-		if (this.location.x > 505){  // enemies come back after crossing the screen
-			this.location.x = Math.random() * -300;
-			this.location.y = Math.random() * 250;
+		if (this.x > 505){  // enemies come back after crossing the screen
+			randomize(xValues);
+			this.x = x;
+			this.y = y;
 		}
-
-		this.location.x += this.speed*dt;  // this part makes enemies move
+		this.x += this.speed*dt;  // this part makes enemies move
 	}
 
 	increaseSpeed(){  //increase speed after a level is won
@@ -52,27 +45,33 @@ class Enemy {
 		});
 	}
 
+	resetEnemy(){
+		allEnemies.forEach(function(enemy) {
+			randomize(xValues);
+			enemy.x = x;
+			enemy.y = y;
+		});
+	}
+
 	checkCollisions(){  //handle collisions with the player
-		if (this.location.x <= (player.x + 40) && this.location.x >= (player.x - 40) &&
-			this.location.y <= (player.y + 40) && this.location.y >= (player.y - 40)){
+		if (this.x <= (player.x + 40) && this.x >= (player.x - 40) &&
+			this.y <= (player.y + 40) && this.y >= (player.y - 40)){
 			console.log('collision');
 			player.resetPlayer(); //reset player position
 		}
 	}
 }
 
-
 //Player class
 class Player {
 	constructor(){
-		this.sprite = 'images/char-pink-girl.png';  //player image
-		this.x = 300;  //initial location
+		this.sprite = 'images/char-pink-girl.png';  //character image
+		this.x = 100;  //initial location
 		this.y = 300;
 	}
 
 	render(){  //draws the player on canvas
 		ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-
 	}
 
 	update(){ // Update the player's position
@@ -80,14 +79,14 @@ class Player {
 		if (this.y <0){ // check if the player won
 			this.winning();
 		}
-		else if (this.x > 400){ //prevent going offscreen
+		else if (this.x > 400){ //prevent going offscreen horizontally
 			this.x -= 100;
 		}
 		else if (this.x < 0){
 			this.x += 100;
 		}
 
-		if (this.y > 400){ //prevent going offscreen
+		if (this.y > 400){ //prevent going offscreen vertically
 			this.y -= 83;
 		}
 		else if (this.y < -100){
@@ -95,7 +94,7 @@ class Player {
 		}
 	}
 
-	handleInput(direction){ //allows user to control the hero
+	handleInput(direction){ //allows user to control the character
 		console.log(direction);
 		switch (direction){
 			case 'left':
@@ -111,19 +110,19 @@ class Player {
 				this.y += 83;
 				break;
 		}
-
 	}
 
 	resetPlayer(){  //reset to initial position
-		this.x = 300;
+		this.x = 100;
 		this.y = 300;
 	}
 
-	winning(){
-		console.log('win');
+	winning(){ //
 		scoreboard.updateLevels();
 		this.resetPlayer();
 		enemy.increaseSpeed();
+		enemy.resetEnemy();
+		gem.resetGems();
 	}
 }
 
@@ -132,33 +131,106 @@ class Scoreboard{
 		this.x = 10;
 		this.y = 40;
 		this.lvl = 1;
+		this.gems = 0;
+		this.sprite = 'images/gem-orange.png';
 	}
 
 	render(){
 		ctx.font = '24px serif';
 	    ctx.fillText(`Speed: ${this.lvl}`, this.x, this.y);
+	    ctx.drawImage(Resources.get(this.sprite), 420, -20, 50, 70);
+	    ctx.fillText(`${this.gems}`, 475, 40);
 	}
 
 	updateLevels(){
 	    this.lvl++;
 	}
+
+	updateGems(){
+		 allGems.forEach(function(gem) {  //loops through all of the objects within your allEnemies array                                             // as defined in app.js and calls their update() methods.
+            if(gem.y<=0&&gem.y>-3){
+            	scoreboard.gems++;
+            }
+
+
+        });
+
+	}
 }
 
-var scoreboard = new Scoreboard();
-const allEnemies = [];
-	let x = Math.random() * -500;
-	let y = Math.random() * 250;
+class Gem{
+	constructor(x,y){
+		this.sprite = 'images/gem-orange.png' ;  //gem image
+		this.x = x;
+		this.y = y;
+		this.speed = 150;
+		this.found = false;
+	}
 
-	for (let i=0; i<3; i++){
-		x = Math.random() * -300;
-		y = Math.random() * 250;
-		var enemy = new Enemy(x,y);
-		allEnemies.push(enemy);
+	render(){
+	    ctx.drawImage(Resources.get(this.sprite), this.x, this.y, 50, 70);
 
 	}
 
+	update(dt){
+		if(this.found === true && this.y >-100){
+			this.y -= this.speed*dt;
+		}
+	}
+
+	resetGems(){
+		allGems.forEach(function(gem) {
+			randomize(gemValues);
+			gem.x = x;
+			gem.y = y+80;
+			gem.found = false;
+		});
+	}
+
+	checkCollisions(){  //handle collisions with the player
+		if (this.x <= (player.x + 50) && this.x >= (player.x - 50) &&
+			this.y <= (player.y + 100) && this.y >= (player.y - 5)){
+			console.log('you found a gem');
+			this.found = true;
+			scoreboard.updateGems(); //add gem to the scoreboard
+
+		}
+	}
+}
+
+
+	var scoreboard = new Scoreboard();
+	const allEnemies = [];
+	let x, y, yChoser;
+	let xValues = [0, -80, -280, -380, -480, -580];
+	let gemValues = [25, 125, 225, 325, 425];
+
+
+	for (let i=0; i<6; i++){
+		randomize(xValues);
+		var enemy = new Enemy(x,y);
+		allEnemies.push(enemy);
+	}
+
+function randomize(values){
+		x = values[Math.floor(Math.random() * values.length)];
+		yChoser = Math.random();
+		yChoser<=0.33 ? y=43 : yChoser<=0.66 ? y = 126 : y = 205;
+		return x, y;
+}
+
+	const allGems = [];
+	for (let i=0; i<3; i++){
+		randomize(gemValues);
+		var gem = new Gem(x,y+80);
+		allGems.push(gem);
+	}
+
+
+
 	var player = new Player(); //initiate player
-	player.render();  //render player
+
+
 
 
 

@@ -61,6 +61,10 @@ var Engine = (function(global) {  //this function is an iffy  //why do we pass g
         allEnemies.forEach(function(enemy) {
             enemy.checkCollisions();
         });
+
+        allGems.forEach(function(gem) {
+            gem.checkCollisions();
+        });
     }
 
 
@@ -74,6 +78,13 @@ var Engine = (function(global) {  //this function is an iffy  //why do we pass g
                                               // as defined in app.js and calls their update() methods.
             enemy.update(dt);
         });
+
+        allGems.forEach(function(gem) {  //loops through all of the objects within your allEnemies array
+                                              // as defined in app.js and calls their update() methods.
+            gem.update(dt);
+        });
+
+        scoreboard.updateGems();
 
         player.update();
                             //It will then call the update function for your player object.
@@ -142,13 +153,19 @@ var Engine = (function(global) {  //this function is an iffy  //why do we pass g
 
     //--------------//
 
-    function renderEntities() {     /* This function is called by the render function and is called on each game
-                                    * tick. */
+    function renderEntities() {     /* This function is called by the render function and is called on each game tick. */
+
         allEnemies.forEach(function(enemy) {
             enemy.render();
         });
 
+        allGems.forEach(function(gem){
+            gem.render();
+        });
+
         player.render();
+
+
     }
 
     function renderScoreboard(){
@@ -174,7 +191,8 @@ var Engine = (function(global) {  //this function is an iffy  //why do we pass g
         'images/water-block.png',
         'images/grass-block.png',
         'images/enemy-bug.png',
-        'images/char-pink-girl.png'
+        'images/char-pink-girl.png',
+        'images/gem-orange.png'
     ]);
 
     Resources.onReady(init); //set init as the callback method, so when all of images are loaded our game will start.

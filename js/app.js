@@ -4,6 +4,7 @@
 	// The update method for the Enemy Updates the Enemy location (you need to implement) *
 	// Handles collision with the Player (you need to implement)
 	// You can add your own Enemy methods as needed
+	//he enemies move in varying speeds on the paved block portion of the scene. *
 
 //Handle Key Presses
 document.addEventListener('keyup', function(e) {
@@ -23,18 +24,19 @@ class Enemy {
 		this.sprite = 'images/enemy-bug.png'; // The image/sprite for enemies
 		this.x=x;
 		this.y=y;
-    	this.speed = 50; // initial speed
+    	this.speed = Math.floor(Math.random() * 200 + 50); // initial speed
 	}
 
 	render(){  // draw enemy on screen
 		ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 	}
 
-	update(dt){ // Update the enemy's position
+	update(dt){ // Update the enemy's position and speed
 		if (this.x > 505){  // enemies come back after crossing the screen
 			randomize(xValues);
 			this.x = x;
 			this.y = y;
+			this.speed = Math.floor(Math.random() * 200 + 50);
 		}
 		this.x += this.speed*dt;  // this part makes enemies move
 	}
@@ -57,6 +59,9 @@ class Enemy {
 		if (this.x <= (player.x + 40) && this.x >= (player.x - 40) &&
 			this.y <= (player.y + 40) && this.y >= (player.y - 40)){
 			console.log('collision');
+			if (scoreboard.gems > 0){
+			scoreboard.gems -= [1,2,3][Math.floor(Math.random() * 3)];  //decrease number of gems
+			}
 			player.resetPlayer(); //reset player position
 		}
 	}
@@ -126,6 +131,7 @@ class Player {
 	}
 }
 
+//Scoreboard class
 class Scoreboard{
 	constructor(){
 		this.x = 10;
@@ -137,7 +143,7 @@ class Scoreboard{
 
 	render(){
 		ctx.font = '24px serif';
-	    ctx.fillText(`Speed: ${this.lvl}`, this.x, this.y);
+	    ctx.fillText(`Level: ${this.lvl}`, this.x, this.y);
 	    ctx.drawImage(Resources.get(this.sprite), 420, -20, 50, 70);
 	    ctx.fillText(`${this.gems}`, 475, 40);
 	}
@@ -146,34 +152,25 @@ class Scoreboard{
 	    this.lvl++;
 	}
 
-	updateGems(){
-		 allGems.forEach(function(gem) {  //loops through all of the objects within your allEnemies array                                             // as defined in app.js and calls their update() methods.
-            if(gem.y<=0&&gem.y>-3){
-            	scoreboard.gems++;
-            }
-
-
-        });
-
 	}
-}
 
+
+//Gem class
 class Gem{
 	constructor(x,y){
 		this.sprite = 'images/gem-orange.png' ;  //gem image
 		this.x = x;
 		this.y = y;
-		this.speed = 150;
+		this.speed = 1550;
 		this.found = false;
 	}
 
 	render(){
 	    ctx.drawImage(Resources.get(this.sprite), this.x, this.y, 50, 70);
-
 	}
 
 	update(dt){
-		if(this.found === true && this.y >-100){
+		if(this.found === true && this.y >-70){
 			this.y -= this.speed*dt;
 		}
 	}
@@ -191,18 +188,18 @@ class Gem{
 		if (this.x <= (player.x + 50) && this.x >= (player.x - 50) &&
 			this.y <= (player.y + 100) && this.y >= (player.y - 5)){
 			console.log('you found a gem');
-			this.found = true;
-			scoreboard.updateGems(); //add gem to the scoreboard
-
+			if(this.found === false){ //prevent adding the same gem twice
+				this.found = true;
+				scoreboard.gems++; //add gem to the scoreboard
+			}
 		}
 	}
 }
 
-
 	var scoreboard = new Scoreboard();
 	const allEnemies = [];
 	let x, y, yChoser;
-	let xValues = [0, -80, -280, -380, -480, -580];
+	let xValues = [0, -80, -280, -380, -480, -580, -680, -780, -880];
 	let gemValues = [25, 125, 225, 325, 425];
 
 
@@ -217,6 +214,12 @@ function randomize(values){
 		yChoser = Math.random();
 		yChoser<=0.33 ? y=43 : yChoser<=0.66 ? y = 126 : y = 205;
 		return x, y;
+}
+
+function checkGems(gemArray){
+	// for (let i=0; i<gemArray.length; i++){
+	// 	if (gemArray[i]===gemArray[i-1])
+	// }
 }
 
 	const allGems = [];

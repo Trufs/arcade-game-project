@@ -84,7 +84,6 @@ var Engine = (function(global) {  //this function is an iffy  //why do we pass g
             gem.update(dt);
         });
 
-        scoreboard.updateGems();
 
         player.update();
                             //It will then call the update function for your player object.

@@ -139,8 +139,8 @@ class Scoreboard{
 	render(){
 		ctx.font = '24px serif';
 	    ctx.fillText(`Level: ${this.lvl}`, this.x, this.y);
-	    ctx.drawImage(Resources.get(this.sprite), 420, -20, 50, 70);
-	    ctx.fillText(`${this.gems}`, 475, 40);
+	    ctx.drawImage(Resources.get(this.sprite), 415, -20, 50, 70);
+	    ctx.fillText(`${this.gems}`, 470, 40);
 	}
 
 	updateLevels(){
@@ -184,6 +184,7 @@ class Gem{
 			this.x = x;
 			this.y = y+80;
 			this.found = false;
+			checkGems(allGems);
 	}
 
 	checkCollisions(){  //handle collisions with the player
@@ -246,7 +247,7 @@ function checkGems(gemArray){
 					console.log('trouble');
 					randomize(gemValues);
 					gemArray[j].x = x;
-					gemArray[j].y = y;
+					gemArray[j].y = y+80;
 					checkGems(allGems);
 			}
 		}

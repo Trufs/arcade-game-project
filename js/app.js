@@ -1,10 +1,3 @@
-// The Enemy function, which initiates the Enemy by:
-	// Setting the Enemy initial location (you need to implement) *
-	// Setting the Enemy speed (you need to implement) *
-	// The update method for the Enemy Updates the Enemy location (you need to implement) *
-	// Handles collision with the Player (you need to implement)
-	// You can add your own Enemy methods as needed
-	//he enemies move in varying speeds on the paved block portion of the scene. *
 
 //Handle Key Presses
 document.addEventListener('keyup', function(e) {
@@ -22,7 +15,7 @@ document.addEventListener('keyup', function(e) {
 class Enemy {
 	constructor(x,y){
 		this.sprite = 'images/enemy-bug.png'; // The image/sprite for enemies
-		this.x=x;
+		this.x=x;							 //x,y - coordinates of the enemy on canvas
 		this.y=y;
     	this.speed = Math.floor(Math.random() * 200 + 50); // initial speed
 	}
@@ -33,7 +26,7 @@ class Enemy {
 
 	update(dt){ // Update the enemy's position and speed
 		if (this.x > 505){  // enemies come back after crossing the screen
-			randomize(xValues);
+			randomize(xValues);  //get random x,y values for the enemy
 			this.x = x;
 			this.y = y;
 			this.speed = Math.floor(Math.random() * 200 + 50);
@@ -47,7 +40,7 @@ class Enemy {
 		});
 	}
 
-	resetEnemy(){
+	resetEnemy(){  //resets enemies after a level is won
 		allEnemies.forEach(function(enemy) {
 			randomize(xValues);
 			enemy.x = x;
@@ -59,9 +52,7 @@ class Enemy {
 		if (this.x <= (player.x + 40) && this.x >= (player.x - 40) &&
 			this.y <= (player.y + 40) && this.y >= (player.y - 40)){
 			console.log('collision');
-			if (scoreboard.gems > 0){
-			scoreboard.gems -= [1,2,3][Math.floor(Math.random() * 3)];  //decrease number of gems
-			}
+			scoreboard.decreaseGems();
 			player.resetPlayer(); //reset player position
 		}
 	}
@@ -152,7 +143,16 @@ class Scoreboard{
 	    this.lvl++;
 	}
 
+	decreaseGems(){
+		if (this.gems > 0){
+			this.gems -= [1,2,3][Math.floor(Math.random() * 3)];  //decrease number of gems
+		}
+		if (this.gems < 0){  //prevent having negative gems
+			this.gems = 0;
+		}
 	}
+
+}
 
 
 //Gem class
@@ -216,12 +216,6 @@ function randomize(values){
 		return x, y;
 }
 
-function checkGems(gemArray){
-	// for (let i=0; i<gemArray.length; i++){
-	// 	if (gemArray[i]===gemArray[i-1])
-	// }
-}
-
 	const allGems = [];
 	for (let i=0; i<3; i++){
 		randomize(gemValues);
@@ -229,33 +223,10 @@ function checkGems(gemArray){
 		allGems.push(gem);
 	}
 
-
+function checkGems(gemArray){
+	// for (let i=0; i<gemArray.length; i++){
+	// 	if (gemArray[i]===gemArray[i-1])
+	// }
+}
 
 	var player = new Player(); //initiate player
-
-
-
-
-
-
-
-    // ^^^ You should multiply any movement by the dt parameter
-    // which will ensure the game runs at the same speed for
-    // all computers.
-
-//PLAYER
-// Now write your own player class
-// This class requires an update(), render() and
-// a handleInput() method.
-
-//  At minimum you should implement the following:
-	// The Player function, which initiates the Player by:
-		// Loading the image by setting this.sprite to the appropriate image in the image folder (use the code from the Enemy function as an example on how to do that) *
-		// Setting the Player initial location *
-	// The update method for the Player (can be similar to the one for the Enemy) *
-	// The render method for the Player (use the code from the render method for the Enemy) *
-	// The handleInput method, which should receive user input, allowedKeys (the key which was pressed) and move the player according to that input. In particular: *
-	// Left key should move the player to the left, right key to the right, up should move the player up and down should move the player down. *
-	// Recall that the player cannot move off screen (so you will need to check for that and handle appropriately). *
-	// If the player reaches the water the game should be reset by moving the player back to the initial location (you can write a separate reset Player method to handle that).*
-	// You can add your own Player methods as needed.
